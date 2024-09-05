@@ -92,8 +92,10 @@ ENDIF()
 
 PROJECT(osgQt)
 
-FIND_PACKAGE(OpenSceneGraph 3.6.0 REQUIRED osgDB osgGA osgUtil osgText osgViewer osgWidget)
-SET(OPENSCENEGRAPH_SOVERSION 145)
+set(OSG_DIR D:/OpenSceneGraph/Install)
+
+FIND_PACKAGE(OpenSceneGraph REQUIRED osgDB osgGA osgUtil osgText osgViewer osgWidget)
+SET(OPENSCENEGRAPH_SOVERSION 162)
 
 SET(OSG_PLUGINS osgPlugins-${OPENSCENEGRAPH_VERSION})
 
@@ -267,11 +269,13 @@ ELSE()
     FIND_PACKAGE(OpenGL)
 ENDIF()
 
+set(G_OSG_INCLUDE_DIR D:/OpenSceneGraph/Install/include)
 
 INCLUDE_DIRECTORIES(
     ${OPENSCENEGRAPH_INCLUDE_DIRS}
     ${CMAKE_CURRENT_LIST_DIR}/include
     ${CMAKE_CURRENT_BINARY_DIR}/src
+	${G_OSG_INCLUDE_DIR}
     ${OPENGL_INCLUDE_DIR}
 )
 
@@ -423,7 +427,7 @@ INCLUDE(OsgMacroUtils)
 # via cmake -DDESIRED_QT_VERSION=5
 # QUIET option disables messages if the package cannot be found.
 
-FIND_PACKAGE(Qt5 COMPONENTS Widgets OpenGL REQUIRED)
+FIND_PACKAGE(Qt6 COMPONENTS Widgets OpenGL OpenGLWidgets REQUIRED)
 
 
 ################################################################################

@@ -1,3 +1,4 @@
+#include <iostream>
 #include <osgQOpenGL/GraphicsWindowEx>
 #include <osgQOpenGL/StateEx>
 

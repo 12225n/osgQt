@@ -257,7 +257,7 @@ void OSGRenderer::mousePressEvent(QMouseEvent* event)
         button = 1;
         break;
 
-    case Qt::MidButton:
+    case Qt::MiddleButton: // MidButton:
         button = 2;
         break;
 
@@ -289,7 +289,7 @@ void OSGRenderer::mouseReleaseEvent(QMouseEvent* event)
         button = 1;
         break;
 
-    case Qt::MidButton:
+    case Qt::MiddleButton : // MidButton:
         button = 2;
         break;
 
@@ -321,7 +321,7 @@ void OSGRenderer::mouseDoubleClickEvent(QMouseEvent* event)
         button = 1;
         break;
 
-    case Qt::MidButton:
+    case Qt::MiddleButton : // MidButton:
         button = 2;
         break;
 
@@ -353,14 +353,40 @@ void OSGRenderer::mouseMoveEvent(QMouseEvent* event)
 void OSGRenderer::wheelEvent(QWheelEvent* event)
 {
     setKeyboardModifiers(event);
-    m_osgWinEmb->getEventQueue()->mouseMotion(event->x() * m_windowScale,
-                                              event->y() * m_windowScale);
-    m_osgWinEmb->getEventQueue()->mouseScroll(
-        event->orientation() == Qt::Vertical ?
-        (event->delta() > 0 ? osgGA::GUIEventAdapter::SCROLL_UP :
-         osgGA::GUIEventAdapter::SCROLL_DOWN) :
-        (event->delta() > 0 ? osgGA::GUIEventAdapter::SCROLL_LEFT :
-         osgGA::GUIEventAdapter::SCROLL_RIGHT));
+
+    QPointF tmpMousePt = event->position();
+
+    //m_osgWinEmb->getEventQueue()->mouseMotion(event->position().x() * m_windowScale,
+    //        event->position().y() * m_windowScale);
+
+    m_osgWinEmb->getEventQueue()->mouseMotion(tmpMousePt.x() * m_windowScale,
+                                    tmpMousePt.y() * m_windowScale);
+
+    //m_osgWinEmb->getEventQueue()->mouseMotion(event->x() * m_windowScale,
+    //                                          event->y() * m_windowScale);
+    // 
+    //m_osgWinEmb->getEventQueue()->mouseScroll(
+    //    event->angleDelta() == Qt::Vertical ?
+    //    (event->delta() > 0 ? osgGA::GUIEventAdapter::SCROLL_UP :
+    //     osgGA::GUIEventAdapter::SCROLL_DOWN) :
+    //    (event->delta() > 0 ? osgGA::GUIEventAdapter::SCROLL_LEFT :
+    //     osgGA::GUIEventAdapter::SCROLL_RIGHT));
+
+    QPoint tmpAngleDeltaPt = event->angleDelta();
+
+    if (tmpAngleDeltaPt.y() != 0)
+    {
+        m_osgWinEmb->getEventQueue()->mouseScroll(
+            (tmpAngleDeltaPt.y() > 0 ? osgGA::GUIEventAdapter::SCROLL_UP :
+                osgGA::GUIEventAdapter::SCROLL_DOWN));
+    }
+
+    if (tmpAngleDeltaPt.x() != 0)
+    {
+        m_osgWinEmb->getEventQueue()->mouseScroll(
+            (tmpAngleDeltaPt.x() > 0 ? osgGA::GUIEventAdapter::SCROLL_LEFT :
+                osgGA::GUIEventAdapter::SCROLL_RIGHT));
+    }
 }
 
 bool OSGRenderer::checkEvents()
